@@ -1,0 +1,10 @@
+ruuvitags = {
+        "E7:CB:DA:BE:BE:FB": "Bathroom",
+        "C7:63:98:48:C8:43": "Bedroom",
+        "F3:39:43:C6:1F:3C": "Balcony",
+        "DA:23:AB:05:49:D2": "Fridge",
+        "D2:03:F3:D4:19:C6": "Guestroom",
+        "DA:B6:8D:4E:29:8B": "Outside",
+        }
+
+
