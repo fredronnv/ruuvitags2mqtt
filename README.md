@@ -3,7 +3,7 @@ Simple docker image to export ruuvitags to an mqtt server
 
 ## Motivation
 
-RuuviTags are cool little devices that broadcast sensor data over BLE. This script will capture any broadcasted BLE beacons and publish them as MQTT topics to an MQTT broker. Using MQTT relays this can be collected to a central location. The base topic path ```ruuvitags/``` is used.
+RuuviTags are cool little devices that broadcast sensor data over BLE. This script will capture any broadcasted BLE beacons and publish them as MQTT topics to an MQTT broker. Using MQTT relays this can be collected to a central location. The base topic path ```ruuvitags``` is used, modify this by setting RUUVITAG_BASE_TOPIC environment variable.
 
 ## Building
 build and test using docker-compose
