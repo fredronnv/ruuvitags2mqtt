@@ -12,6 +12,8 @@ mqttc = mqtt.Client()
 
 mqtt_host = os.getenv('MQTT_HOST')
 
+debug = os.getenv('DEBUG', default=False)
+
 mqtt_args = dict(
     port=os.getenv('MQTT_PORT', default=1883),
     keepalive=os.getenv('MQTT_KEEPALIVE', default=60),
@@ -37,7 +39,7 @@ def msgify(name, payload):
             try:
                 msgs.append({"topic": "ruuvitags/%s/%s" % (name,key), "payload": float(payload[key])})
             except Exception as e:
-                pass
+                print(e)
     return msgs
 
 def nameify(mac_address):
@@ -55,14 +57,11 @@ def handle_data(found_data):
     except Exception as e:
         print(e)
 
-    sys.stdout.flush()
-
-
 mqttc.loop_start()
 try:
     RuuviTagSensor.get_datas(handle_data, bt_device=device)
-except:
-    pass
+except Exception as e:
+    print(e)
     sys.exit(1)
 mqttc.loop_stop()
 

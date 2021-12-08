@@ -1,0 +1,6 @@
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+
+variables:
+  DOCKER_DRIVER: zfs
+
