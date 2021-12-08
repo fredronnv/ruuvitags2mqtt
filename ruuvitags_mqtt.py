@@ -20,6 +20,8 @@ mqtt_args = dict(
     bind_address=os.getenv('MQTT_BIND_ADDRESS', default="")
     )
 
+mqtt_base_topic = os.getenv('RUUVITAG_BASE_TOPIC', default='ruuvitags')
+
 mqttc.connect(mqtt_host, **mqtt_args)
 
 ruuvitags = {}
@@ -37,7 +39,7 @@ def msgify(name, payload):
     for key in payload.keys():
         if key != "identifier":
             try:
-                msgs.append({"topic": "ruuvitags/%s/%s" % (name,key), "payload": float(payload[key])})
+                msgs.append({"topic": "%s/%s/%s" % (mqtt_base_topic,name,key), "payload": float(payload[key])})
             except Exception as e:
                 print(e)
     return msgs

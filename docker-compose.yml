@@ -1,15 +1,12 @@
 ---
 version: "2"
 services: 
-  ruuvitags2mqtt:
-    depends_on:
-      - mqtt
+ ruuvitags2mqtt:
     container_name: ruuvitags2mqtt
     privileged: true
-    network_mode: "host"
     restart: unless-stopped
     build: .
     volumes:
-      - ./tag_names.yml:/tag_names.yml
+      - ./tag_names.yml.example:/tag_names.yml
     environment:
-      MQTT_HOST: 127.0.0.1
+      MQTT_HOST: mqtt
