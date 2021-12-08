@@ -1,5 +1,8 @@
+stages:
+  - build
+
 include:
-  - template: Auto-DevOps.gitlab-ci.yml
+  - template: Jobs/Build.gitlab-ci.yml
 
 variables:
   DOCKER_DRIVER: zfs
