@@ -15,6 +15,8 @@ mqtt_host = os.getenv('MQTT_HOST', default='127.0.0.1')
 
 debug = os.getenv('DEBUG', default=False)
 
+hass_configured = set()
+
 mqtt_args = dict(
     port=os.getenv('MQTT_PORT', default=1883),
     keepalive=os.getenv('MQTT_KEEPALIVE', default=60),
@@ -52,11 +54,11 @@ def nameify(mac_address):
 def hass_autoconfigure(mac_address, name, key):
     object_id = mac_address.replace(':','')
     object_id = f"ruuvitag_{object_id}_{key}"
+    entity_id = f"{name.lower()}_{key}"
     msg = {'topic': f'{hass_autodiscovery_topic}/sensor/{object_id}/config'}
     msg['payload'] = {
         'name': f'{name} {key}',
-        'entity_id': f'{name.lower()}_{key}',
-        'object_id': object_id,
+        'object_id': entity_id,
         'unique_id': object_id,
     }
     if key in entity_key_mappings.keys():
@@ -76,10 +78,16 @@ def msgify(mac_address, payload):
     msgs = []
     name = nameify(mac_address)
     for key in payload.keys():
+        unique_key = f"{mac_address}_{key}"
         if key not in ["identifier", "mac"]:
-            if hass_autodiscovery:
+            if hass_autodiscovery and unique_key not in hass_configured:
                 try:
-                    msgs.append(hass_autoconfigure(mac_address, name, key))
+                    # If discovery is enable we first unconfigure any previous
+                    # configuration to be able to update entity_ids etc...
+                    discovery_packet = hass_autoconfigure(mac_address,name,key)
+                    msgs.append({'topic': discovery_packet['topic'], 'payload': ""})
+                    msgs.append(discovery_packet)
+                    hass_configured.add(unique_key)
                 except Exception as e:
                     print(f"{e}: when handling hass autoconfigure for {key}")
             try:

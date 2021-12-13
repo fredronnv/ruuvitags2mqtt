@@ -9,7 +9,7 @@ humidity:
 battery:
   device_class: voltage
   unit_of_measurement: V
-  value_template: "{{ value / 1000 }}"
+  value_template: "{{ value|float / 1000|float }}"
 
 pressure:
   device_class: pressure
