@@ -20,7 +20,7 @@ hass_configured = set()
 mqtt_args = dict(
     port=os.getenv('MQTT_PORT', default=1883),
     keepalive=os.getenv('MQTT_KEEPALIVE', default=60),
-    bind_address=os.getenv('MQTT_BIND_ADDRESS', default=mqtt_host)
+    #bind_address=os.getenv('MQTT_BIND_ADDRESS', default=mqtt_host)
     )
 
 mqtt_base_topic = os.getenv('RUUVITAG_BASE_TOPIC', default='ruuvitags')
