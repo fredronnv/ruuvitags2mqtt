@@ -10,5 +10,7 @@ RUN sed -i -e 's/sudo //' /usr/local/lib/python3.8/site-packages/ruuvitag_sensor
     sed -i -e "s/'sudo', '-n', //" /usr/local/lib/python3.8/site-packages/ruuvitag_sensor/adapters/nix_hci.py
 
 COPY ruuvitags_mqtt.py /
+COPY entity_key_mappings.yml /
+COPY tag_names.yml.example /tag_names.yml
 
 CMD python /ruuvitags_mqtt.py

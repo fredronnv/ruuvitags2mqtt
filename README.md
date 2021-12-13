@@ -19,3 +19,7 @@ The environment variable HCI_DEVICE can be used to provide which HCI device do u
 ### Human-friendly Topics
 
 By default tags are identified by their MAC address, which is published sans ':' as topics to identify each tag. If you need to customize the topic path with other names an optional file ```tag_names.yml``` can be provided, which will translate the MAC addresses to a readable name. See the provided example.
+
+### Home Assistant Autodiscovery
+
+If you use home assistant you can use the boolean ```HASS_AUTODISCOVERY``` to enable it. The default autodiscovery topic is ```homeassistant``` can be changed using the environment variable ```HASS_AUTODISCOVERY_TOPIC```.
