@@ -69,6 +69,7 @@ def hass_autoconfigure(mac_address, name, key):
 
     # Convert payload to string
     msg['payload'] = json.dumps(msg['payload'])
+    msg['retain'] = True
 
     return msg
 
@@ -85,13 +86,13 @@ def msgify(mac_address, payload):
                     # If discovery is enable we first unconfigure any previous
                     # configuration to be able to update entity_ids etc...
                     discovery_packet = hass_autoconfigure(mac_address,name,key)
-                    msgs.append({'topic': discovery_packet['topic'], 'payload': ""})
+                    msgs.append({'topic': discovery_packet['topic'], 'payload': "", 'retain': False})
                     msgs.append(discovery_packet)
                     hass_configured.add(unique_key)
                 except Exception as e:
                     print(f"{e}: when handling hass autoconfigure for {key}")
             try:
-                msgs.append({"topic": "%s/%s/%s" % (mqtt_base_topic,name,key), "payload": float(payload[key])})
+                msgs.append({"topic": "%s/%s/%s" % (mqtt_base_topic,name,key), "payload": float(payload[key]), "retain": False})
             except Exception as e:
                 print(f"{e}: when handling {key}: {payload[key]}")
     return msgs
@@ -103,7 +104,7 @@ def handle_data(found_data):
     print(f"Packet from {key}")
     try:
         for m in msgify(key,value):
-            mqttc.publish(m['topic'], m['payload'])
+            mqttc.publish(m['topic'], payload=m['payload'], retain=m['retain'])
     except Exception as e:
         print(f"{e}: {m}")
     sys.stdout.flush()
